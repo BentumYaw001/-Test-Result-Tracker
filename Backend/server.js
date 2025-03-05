@@ -10,7 +10,6 @@ app.use(express.json());
 configDotenv();
 const port = process.env.PORT || 5000;
 
-// ✅ Get all tests
 app.get("/api/tests", async (req, res) => {
   try {
     const tests = await PatientTest.find();
@@ -23,7 +22,6 @@ app.get("/api/tests", async (req, res) => {
   }
 });
 
-// ✅ Get test by ID (with MongoDB ObjectId validation)
 app.get("/api/tests/:id", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -43,7 +41,6 @@ app.get("/api/tests/:id", async (req, res) => {
   }
 });
 
-// ✅ Create a new test
 app.post("/api/tests", async (req, res) => {
   try {
     const validation = testSchema.safeParse(req.body);
@@ -60,7 +57,6 @@ app.post("/api/tests", async (req, res) => {
   }
 });
 
-// ✅ Update a test by ID
 app.put("/api/tests/:id", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -92,7 +88,6 @@ app.put("/api/tests/:id", async (req, res) => {
   }
 });
 
-// ✅ Delete a test by ID
 app.delete("/api/tests/:id", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -112,7 +107,6 @@ app.delete("/api/tests/:id", async (req, res) => {
   }
 });
 
-// ✅ Start server and connect to DB
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
   connectionDB();
