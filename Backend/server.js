@@ -1,69 +1,71 @@
 import express from "express";
 import { testSchema } from "./Test Validation/Validator.js";
-import { DiagnosticTests } from "./db/db.js";
+import { connectionDB } from "./db/db.js";
+import PatientTest from "./Data Model/test.model.js";
+import mongoose from "mongoose";
+import { configDotenv } from "dotenv";
 
 const app = express();
 app.use(express.json());
+configDotenv();
+const port = process.env.PORT || 5000;
 
-app.listen(5000, () => {
-  console.log("Listening on port 5000");
-});
-
-app.get("/api/tests", (req, res) => {
+// ✅ Get all tests
+app.get("/api/tests", async (req, res) => {
   try {
-    if (DiagnosticTests.length === 0)
-      return res.status(404).send("No data found");
-    res.status(200).json(DiagnosticTests);
+    const tests = await PatientTest.find();
+    if (!tests.length) {
+      return res.status(404).json({ message: "No data found" });
+    }
+    res.status(200).json(tests);
   } catch (error) {
-    res.status(500).send(`Error: ${error.message}`);
+    res.status(500).json({ error: `Error: ${error.message}` });
   }
 });
 
-app.get("/api/tests/:id", (req, res) => {
+// ✅ Get test by ID (with MongoDB ObjectId validation)
+app.get("/api/tests/:id", async (req, res) => {
   try {
-    const test = DiagnosticTests.find((c) => c.id === req.params.id);
-    if (!test)
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Invalid ID format" });
+    }
+
+    const test = await PatientTest.findById(req.params.id);
+    if (!test) {
       return res
         .status(404)
-        .send(`No data found for test with id: ${req.params.id}`);
+        .json({ message: `No data found for ID: ${req.params.id}` });
+    }
+
     res.status(200).json(test);
   } catch (error) {
-    res.status(500).send(`Error: ${error.message}`);
+    res.status(500).json({ error: `Error: ${error.message}` });
   }
 });
 
-app.post("/api/tests", (req, res) => {
+// ✅ Create a new test
+app.post("/api/tests", async (req, res) => {
   try {
     const validation = testSchema.safeParse(req.body);
     if (!validation.success) {
       return res.status(400).json({ errors: validation.error.errors });
     }
 
-    const { patientName, testType, result, notes } = req.body;
+    const newTest = new PatientTest(validation.data);
+    await newTest.save();
 
-    const newTest = {
-      id: (DiagnosticTests.length + 1).toString(),
-      patientName,
-      testType,
-      result,
-      testDate: new Date().toISOString().split("T")[0],
-      notes: notes || "",
-    };
-
-    DiagnosticTests.push(newTest);
-    res.status(201).json({ message: "Test added successfully", test: newTest });
+    res.status(201).json({ message: "Data added successfully", test: newTest });
   } catch (error) {
-    res.status(500).send(`Error: ${error.message}`);
+    res.status(500).json({ error: `Error: ${error.message}` });
   }
 });
 
-app.put("/api/tests/:id", (req, res) => {
+// ✅ Update a test by ID
+app.put("/api/tests/:id", async (req, res) => {
   try {
-    const test = DiagnosticTests.find((c) => c.id === req.params.id);
-    if (!test)
-      return res
-        .status(404)
-        .send(`No data found for test with id: ${req.params.id}`);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Invalid ID format" });
+    }
 
     const partialSchema = testSchema.partial();
     const validation = partialSchema.safeParse(req.body);
@@ -71,30 +73,47 @@ app.put("/api/tests/:id", (req, res) => {
       return res.status(400).json({ errors: validation.error.errors });
     }
 
-    const { patientName, testType, result, notes } = req.body;
+    const updatedTest = await PatientTest.findByIdAndUpdate(
+      req.params.id,
+      validation.data,
+      { new: true }
+    );
+    if (!updatedTest) {
+      return res
+        .status(404)
+        .json({ message: `No data found for ID: ${req.params.id}` });
+    }
 
-    if (patientName) test.patientName = patientName;
-    if (testType) test.testType = testType;
-    if (result) test.result = result;
-    if (notes) test.notes = notes;
-
-    res.status(200).json({ message: "Test updated successfully", test });
+    res
+      .status(200)
+      .json({ message: "Test updated successfully", test: updatedTest });
   } catch (error) {
-    res.status(500).send(`Error: ${error.message}`);
+    res.status(500).json({ error: `Error: ${error.message}` });
   }
 });
 
-app.delete("/api/tests/:id", (req, res) => {
+// ✅ Delete a test by ID
+app.delete("/api/tests/:id", async (req, res) => {
   try {
-    const index = DiagnosticTests.findIndex((c) => c.id === req.params.id);
-    if (index === -1)
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Invalid ID format" });
+    }
+
+    const deletedTest = await PatientTest.findByIdAndDelete(req.params.id);
+    if (!deletedTest) {
       return res
         .status(404)
-        .send(`No data found for test with id: ${req.params.id}`);
+        .json({ message: `No data found for ID: ${req.params.id}` });
+    }
 
-    DiagnosticTests.splice(index, 1);
     res.status(200).json({ message: "Test deleted successfully" });
   } catch (error) {
-    res.status(500).send(`Error: ${error.message}`);
+    res.status(500).json({ error: `Error: ${error.message}` });
   }
+});
+
+// ✅ Start server and connect to DB
+app.listen(port, () => {
+  console.log(`Listening on port: ${port}`);
+  connectionDB();
 });
