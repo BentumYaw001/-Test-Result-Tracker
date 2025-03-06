@@ -11,7 +11,7 @@ function Modal() {
     tests,
     setTests,
   } = useRecordStore();
-
+  const API_URL = "https://testtracking-fods.onrender.com";
   if (!editingTest) return null;
 
   const handleChange = (e) => {
@@ -21,7 +21,7 @@ function Modal() {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `https://test-result-tracker.onrender.com/api/tests/${editingTest._id}`,
+        `${API_URL}/api/tests/${editingTest._id}`,
         formData
       );
       setTests(

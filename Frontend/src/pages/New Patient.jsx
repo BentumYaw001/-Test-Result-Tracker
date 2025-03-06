@@ -5,6 +5,7 @@ import { NewPatientData } from "../components/DetailsStore";
 
 function NewPatient() {
   const navigate = useNavigate();
+  const API_URL = "https://testtracking-fods.onrender.com";
 
   const [formData, setFormData] = useState({
     patientName: "",
@@ -22,10 +23,7 @@ function NewPatient() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "https://test-result-tracker.onrender.com/api/tests",
-        formData
-      );
+      const response = await axios.post(`${API_URL}/api/tests`, formData);
       alert(response.data.message);
       navigate("/Records");
     } catch (error) {

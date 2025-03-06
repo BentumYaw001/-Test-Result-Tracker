@@ -9,13 +9,12 @@ function Records() {
   const navigate = useNavigate();
   const { tests, setTests, loading, setLoading, setEditingTest, setFormData } =
     useRecordStore();
+  const API_URL = "https://testtracking-fods.onrender.com";
 
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get(
-          "https://test-result-tracker.onrender.com/api/tests"
-        );
+        const response = await axios.get(`${API_URL}/api/tests`);
         setTests(response.data);
       } catch (error) {
         console.error("Error fetching tests:", error);
@@ -29,9 +28,7 @@ function Records() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
-      await axios.delete(
-        `https://test-result-tracker.onrender.com/api/tests/${id}`
-      );
+      await axios.delete(`${API_URL}/api/tests/${id}`);
       setTests(tests.filter((test) => test._id !== id));
       alert("Record deleted successfully!");
     } catch (error) {
