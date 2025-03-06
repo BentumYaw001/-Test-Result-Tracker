@@ -1,11 +1,6 @@
 export const NewPatientData = [
-  {
-    label: "Patient Name",
-  },
-  {
-    label: "Test Type",
-  },
-  {
-    label: "Result",
-  },
+  { label: "Patient Name", name: "patientName" },
+  { label: "Patient Id", name: "patientId" },
+  { label: "Test Type", name: "testType" },
+  { label: "Result", name: "result" },
 ];

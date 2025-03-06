@@ -8,6 +8,10 @@
   min-width: 320px;
   overflow: hidden;
 }
+.NewPatient {
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
 h1 {
   text-align: center;
   margin-bottom: 30px;
@@ -26,10 +30,77 @@ button {
   justify-content: center;
   align-items: center;
 }
-.Commons {
+.Commons,
+.InputSection {
   display: flex;
   flex-direction: column;
-
   padding: 10px;
+}
+
+.InputSection {
+  width: 90%;
+  gap: 5px;
+}
+.Commons {
   gap: 30px;
+}
+
+.TextArea {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+textarea {
+  height: 100px;
+  margin-top: 10px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: hsl(0, 0%, 50%, 0.3);
+}
+.NewButtons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+form {
+  margin-top: 30px;
+}
+input {
+  height: 40px;
+  padding: 0px 10px;
+  border: none;
+  background-color: hsl(0, 0%, 50%, 0.3);
+  outline: none;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 450px;
+}
+
+td {
+  padding: 3px;
+  text-align: center;
+}
+
+.RecordDisplay {
+  display: flex;
+  align-items: center;
+  overflow-x: scroll;
+  width: 100%;
+}
+
+@media (min-width: 450px) {
+  .RecordDisplay {
+    justify-content: center;
+  }
 }

@@ -4,9 +4,12 @@ import { connectionDB } from "./db/db.js";
 import PatientTest from "./Data Model/test.model.js";
 import mongoose from "mongoose";
 import { configDotenv } from "dotenv";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: "http://localhost:5173" }));
+
 configDotenv();
 const port = process.env.PORT || 5000;
 
