@@ -99,6 +99,68 @@ td {
   width: 100%;
 }
 
+.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.delete-button:hover {
+  background-color: darkred;
+}
+
+.edit-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.edit-button:hover {
+  background-color: darkblue;
+}
+
+.edit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-form {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+}
+
+.edit-form h2 {
+  margin-top: 0;
+}
+
+.edit-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.edit-buttons button {
+  padding: 5px 10px;
+}
+
 @media (min-width: 450px) {
   .RecordDisplay {
     justify-content: center;

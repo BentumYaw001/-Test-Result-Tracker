@@ -6,6 +6,14 @@ function Records() {
   const navigate = useNavigate();
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingTest, setEditingTest] = useState(null); // Stores the test being edited
+  const [formData, setFormData] = useState({
+    patientName: "",
+    patientId: "",
+    testType: "",
+    result: "",
+    notes: "",
+  });
 
   // Fetch data from backend
   useEffect(() => {
@@ -36,6 +44,44 @@ function Records() {
     }
   };
 
+  // Handle edit request
+  const handleEdit = (test) => {
+    setEditingTest(test);
+    setFormData({
+      patientName: test.patientName,
+      patientId: test.patientId,
+      testType: test.testType,
+      result: test.result,
+      notes: test.notes || "",
+    });
+  };
+
+  // Handle input change in the edit form
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle save edit
+  const handleSave = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/tests/${editingTest._id}`,
+        formData
+      );
+      setTests(
+        tests.map((test) =>
+          test._id === editingTest._id ? response.data : test
+        )
+      ); // Update UI
+      setEditingTest(null); // Close edit form
+      alert("Record updated successfully!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error updating test:", error);
+      alert("Failed to update the record.");
+    }
+  };
+
   return (
     <div className="Records Commons">
       <h1>Patient Records</h1>
@@ -59,7 +105,7 @@ function Records() {
                 <th>Test Type</th>
                 <th>Result</th>
                 <th>Notes</th>
-                <th>Actions</th> {/* New column for delete button */}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -73,6 +119,12 @@ function Records() {
                   <td>{test.notes || "N/A"}</td>
                   <td>
                     <button
+                      onClick={() => handleEdit(test)}
+                      className="edit-button"
+                    >
+                      Edit
+                    </button>
+                    <button
                       onClick={() => handleDelete(test._id)}
                       className="delete-button"
                     >
@@ -85,6 +137,64 @@ function Records() {
           </table>
         )}
       </div>
+
+      {/* Edit Modal */}
+      {editingTest && (
+        <div className="edit-modal">
+          <div className="edit-form">
+            <h2>Edit Record</h2>
+            <label>Patient Name</label>
+            <input
+              type="text"
+              name="patientName"
+              value={formData.patientName}
+              onChange={handleChange}
+            />
+
+            <label>Patient ID</label>
+            <input
+              type="text"
+              name="patientId"
+              value={formData.patientId}
+              onChange={handleChange}
+            />
+
+            <label>Test Type</label>
+            <input
+              type="text"
+              name="testType"
+              value={formData.testType}
+              onChange={handleChange}
+            />
+
+            <label>Result</label>
+            <input
+              type="text"
+              name="result"
+              value={formData.result}
+              onChange={handleChange}
+            />
+
+            <label>Notes</label>
+            <textarea
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+            ></textarea>
+
+            <div className="edit-buttons">
+              <button
+                onClick={() => {
+                  handleSave();
+                }}
+              >
+                Save
+              </button>
+              <button onClick={() => setEditingTest(null)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
