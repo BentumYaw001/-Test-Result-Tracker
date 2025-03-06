@@ -10,19 +10,23 @@ const TestSchema = new mongoose.Schema(
     testType: {
       type: String,
       required: true,
-    
+    },
+    patientId: {
+      type: String,
+      required: true,
+      unique: true,
     },
     result: {
-      type: String, 
+      type: String,
       required: true,
     },
     notes: {
       type: String,
-      default: "", 
+      default: "",
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

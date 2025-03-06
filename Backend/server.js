@@ -48,11 +48,26 @@ app.post("/api/tests", async (req, res) => {
       return res.status(400).json({ errors: validation.error.errors });
     }
 
+    const { patientId } = validation.data;
+
+    const existingTest = await PatientTest.findOne({ patientId });
+    if (existingTest) {
+      return res
+        .status(400)
+        .json({ message: "Test for this patient already exists." });
+    }
+
     const newTest = new PatientTest(validation.data);
     await newTest.save();
 
     res.status(201).json({ message: "Data added successfully", test: newTest });
   } catch (error) {
+    if (error.code === 11000) {
+      return res
+        .status(400)
+        .json({ message: "Duplicate patient ID detected." });
+    }
+
     res.status(500).json({ error: `Error: ${error.message}` });
   }
 });
