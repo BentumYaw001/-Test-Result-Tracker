@@ -8,11 +8,14 @@ import cors from "cors";
 
 const app = express();
 app.use(express.json());
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://test-result-tracker.vercel.app",
-];
-app.use(cors({ origin: allowedOrigins }));
+
+app.use(
+  cors({
+    origin: ["http://localhost:5174", "https://test-result-tracker.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 configDotenv();
 const port = process.env.PORT || 5000;
