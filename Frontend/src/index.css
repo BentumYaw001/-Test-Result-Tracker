@@ -94,6 +94,7 @@ textarea {
 
 /* Table Styles */
 table {
+  margin-left: 80px;
   border-collapse: collapse;
   width: 100%;
 }
