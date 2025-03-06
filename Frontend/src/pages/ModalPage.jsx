@@ -21,7 +21,7 @@ function Modal() {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/tests/${editingTest._id}`,
+        `https://test-result-tracker.onrender.com/api/tests/${editingTest._id}`,
         formData
       );
       setTests(

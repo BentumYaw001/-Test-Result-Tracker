@@ -23,7 +23,7 @@ function NewPatient() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/tests",
+        "https://test-result-tracker.onrender.com/api/tests",
         formData
       );
       alert(response.data.message);

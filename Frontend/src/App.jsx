@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NewPatient from "./pages/New Patient";
 import Records from "./pages/Records";
@@ -12,7 +17,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/NewPatient" element={<NewPatient />} />
             <Route path="/Records" element={<Records />} />
-            <Route path="*" element={<HomePage />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
       </div>

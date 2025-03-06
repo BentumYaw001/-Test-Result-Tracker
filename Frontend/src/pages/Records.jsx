@@ -13,7 +13,9 @@ function Records() {
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/tests");
+        const response = await axios.get(
+          "https://test-result-tracker.onrender.com/api/tests"
+        );
         setTests(response.data);
       } catch (error) {
         console.error("Error fetching tests:", error);
@@ -27,7 +29,9 @@ function Records() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/tests/${id}`);
+      await axios.delete(
+        `https://test-result-tracker.onrender.com/api/tests/${id}`
+      );
       setTests(tests.filter((test) => test._id !== id));
       alert("Record deleted successfully!");
     } catch (error) {
