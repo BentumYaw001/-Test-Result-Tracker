@@ -1,6 +1,12 @@
+/* Global Styles */
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
 }
 
 .App {
@@ -8,28 +14,37 @@
   min-width: 320px;
   overflow: hidden;
 }
-.NewPatient {
-  overflow-y: scroll;
-  scrollbar-width: none;
-}
+
+/* Typography */
 h1 {
   text-align: center;
   margin-bottom: 30px;
 }
+
+/* Buttons */
 button {
   cursor: pointer;
-  padding: 20px;
+  padding: 15px;
   border: none;
   border-radius: 10px;
   background-color: green;
   color: white;
   font-weight: bold;
+  transition: background 0.3s ease;
 }
+
+button:hover {
+  background-color: darkgreen;
+}
+
+/* Layout & Containers */
 .HomePage {
   height: 100vh;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .Commons,
 .InputSection {
   display: flex;
@@ -37,98 +52,91 @@ button {
   padding: 10px;
 }
 
-.InputSection {
-  width: 90%;
-  gap: 5px;
-}
 .Commons {
   gap: 30px;
 }
 
-.TextArea {
+.InputSection {
+  width: 90%;
+  gap: 5px;
+}
+
+/* Input Fields */
+input,
+textarea {
   width: 100%;
   padding: 10px;
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-textarea {
-  height: 100px;
-  margin-top: 10px;
-  outline: none;
   border: none;
   border-radius: 10px;
-  padding: 10px;
-  background-color: hsl(0, 0%, 50%, 0.3);
+  outline: none;
+  background-color: rgba(128, 128, 128, 0.3);
+  font-size: 1rem;
 }
+
+textarea {
+  height: 100px;
+  resize: none;
+}
+
+/* Buttons Section */
 .NewButtons {
   display: flex;
   justify-content: space-evenly;
 }
 
-form {
-  margin-top: 30px;
-}
-input {
-  height: 40px;
-  padding: 0px 10px;
-  border: none;
-  background-color: hsl(0, 0%, 50%, 0.3);
-  outline: none;
-  font-size: 1rem;
-  border-radius: 10px;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  max-width: 450px;
-}
-
-td {
-  padding: 3px;
-  text-align: center;
-}
-
+/* Record Display */
 .RecordDisplay {
   display: flex;
   align-items: center;
-  overflow-x: scroll;
+  overflow-x: auto;
   width: 100%;
 }
 
-.delete-button {
-  background-color: red;
+/* Table Styles */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 5px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Edit & Delete Buttons */
+.EditButton,
+.DeleteButton {
   color: white;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 5px;
   font-weight: bold;
-  margin-left: 5px;
+  transition: background 0.3s ease;
 }
 
-.delete-button:hover {
-  background-color: darkred;
-}
-
-.edit-button {
+.EditButton {
   background-color: blue;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-weight: bold;
+  margin-bottom: 3px;
 }
 
-.edit-button:hover {
+.EditButton:hover {
   background-color: darkblue;
 }
 
-.edit-modal {
+.DeleteButton {
+  background-color: red;
+  margin-left: 5px;
+}
+
+.DeleteButton:hover {
+  background-color: darkred;
+}
+
+/* Modal */
+.EditModal {
   position: fixed;
   top: 0;
   left: 0;
@@ -140,27 +148,30 @@ td {
   align-items: center;
 }
 
-.edit-form {
+.EditForm {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 400px;
+  width: 70%;
+  max-width: 500px;
 }
 
-.edit-form h2 {
-  margin-top: 0;
+.EditForm h2 {
+  margin-bottom: 10px;
 }
 
-.edit-buttons {
+/* Modal Buttons */
+.ModalEditButtons {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
 }
 
-.edit-buttons button {
+.ModalEditButtons button {
   padding: 5px 10px;
 }
 
+/* Responsive Design */
 @media (min-width: 450px) {
   .RecordDisplay {
     justify-content: center;

@@ -6,7 +6,6 @@ import { NewPatientData } from "../components/DetailsStore";
 function NewPatient() {
   const navigate = useNavigate();
 
-  // State to store form data
   const [formData, setFormData] = useState({
     patientName: "",
     patientId: "",
@@ -15,12 +14,10 @@ function NewPatient() {
     notes: "",
   });
 
-  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -66,7 +63,6 @@ function NewPatient() {
             onChange={handleChange}
           ></textarea>
         </div>
-        {/* Notes Textarea */}
 
         <button type="submit">Save</button>
       </form>
