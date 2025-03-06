@@ -1,28 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import axios from "axios";
 import useRecordStore from "../components/Store";
 import Modal from "./ModalPage";
 import { tableHeadData } from "../components/DetailsStore";
 
 function Records() {
   const navigate = useNavigate();
-  const {
-    tests,
-    loading,
-    setEditingTest,
-    setFormData,
-    fetchTests, // Use global fetch function
-  } = useRecordStore();
+  const { tests, setTests, loading, setLoading, setEditingTest, setFormData } =
+    useRecordStore();
+  const API_URL = "https://testtracking-fods.onrender.com";
 
   useEffect(() => {
+    const fetchTests = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/tests`);
+        setTests(response.data);
+      } catch (error) {
+        console.error("Error fetching tests:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchTests();
-  }, [fetchTests]); // Fetch data on component mount
+  }, [setTests, setLoading]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
       await axios.delete(`${API_URL}/api/tests/${id}`);
-      fetchTests(); // Fetch updated data after deletion
+      setTests(tests.filter((test) => test._id !== id));
       alert("Record deleted successfully!");
     } catch (error) {
       console.error("Error deleting test:", error);
