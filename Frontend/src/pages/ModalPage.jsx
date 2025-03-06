@@ -18,24 +18,44 @@ function Modal() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // const handleSave = async () => {
+  //   try {
+  //     const response = await axios.put(
+  //       `${API_URL}/api/tests/${editingTest._id}`,
+  //       formData
+  //     );
+  //     // setTests(
+  //     //   tests.map((test) =>
+  //     //     test._id === editingTest._id ? response.data : test
+  //     //   )
+  //     // );
+
+  //     setTests((prevTests) =>
+  //       prevTests.map((test) =>
+  //         test._id === editingTest._id ? response.data : test
+  //       )
+  //     );
+
+  //     setEditingTest(null);
+  //   } catch (error) {
+  //     console.error("Error updating test:", error);
+  //     alert("Failed to update the record.");
+  //   }
+  // };
+
   const handleSave = async () => {
     try {
-      const response = await axios.put(
-        `${API_URL}/api/tests/${editingTest._id}`,
-        formData
-      );
-      setTests(
-        tests.map((test) =>
-          test._id === editingTest._id ? response.data : test
-        )
-      );
+      await axios.put(`${API_URL}/api/tests/${editingTest._id}`, formData);
+
+      const response = await axios.get(`${API_URL}/api/tests`);
+      setTests(response.data);
+
       setEditingTest(null);
     } catch (error) {
       console.error("Error updating test:", error);
       alert("Failed to update the record.");
     }
   };
-
   return (
     <div className="EditModal">
       <div className="EditForm">
