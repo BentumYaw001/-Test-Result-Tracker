@@ -80,6 +80,7 @@ function Records() {
                     test.testType,
                     test.result,
                     test.notes || "N/A",
+                    test.createdAt,
                   ].map((value, idx) => (
                     <td key={idx}>{value}</td>
                   ))}
