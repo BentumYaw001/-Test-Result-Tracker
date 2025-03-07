@@ -20,5 +20,6 @@ export const tableHeadData = [
   "Test Type",
   "Result",
   "Notes",
+  "Test Date",
   "Actions",
 ];
